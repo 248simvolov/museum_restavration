@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="bc1e8de3fb174cb9a42b481cb8f60596" Name="Diagram1">
+        <EntityTypeShape EntityType="restovratc_museumModel.sysdiagrams" Width="1.5" PointX="5.75" PointY="7.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="restovratc_museumModel.Выставки" Width="1.5" PointX="3" PointY="7.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="restovratc_museumModel.Растврация" Width="1.5" PointX="5.25" PointY="3.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="restovratc_museumModel.Реставратор" Width="1.5" PointX="3" PointY="11.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="restovratc_museumModel.Специализация" Width="1.5" PointX="0.75" PointY="12" IsExpanded="true" />
+        <EntityTypeShape EntityType="restovratc_museumModel.Тип_экспоната" Width="1.5" PointX="0.75" PointY="4" IsExpanded="true" />
+        <EntityTypeShape EntityType="restovratc_museumModel.Экспонат" Width="1.5" PointX="3" PointY="3.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="restovratc_museumModel.Экспонат_выставка" Width="1.5" PointX="5.25" PointY="0.75" IsExpanded="true" />
+        <AssociationConnector Association="restovratc_museumModel.FK_Экспонат_выставка_Выставки" ManuallyRouted="false" />
+        <AssociationConnector Association="restovratc_museumModel.FK_Растврация_Реставратор" ManuallyRouted="false" />
+        <AssociationConnector Association="restovratc_museumModel.FK_Растврация_Экспонат" ManuallyRouted="false" />
+        <AssociationConnector Association="restovratc_museumModel.FK_Реставратор_Специализация" ManuallyRouted="false" />
+        <AssociationConnector Association="restovratc_museumModel.FK_Экспонат_Тип_экспоната" ManuallyRouted="false" />
+        <AssociationConnector Association="restovratc_museumModel.FK_Экспонат_выставка_Экспонат" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

@@ -1,0 +1,493 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="Хранилище restovratc_museumModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <EntityType Name="Выставки">
+          <Key>
+            <PropertyRef Name="Код_выставки" />
+          </Key>
+          <Property Name="Код_выставки" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Дата_начала" Type="date" Nullable="false" />
+          <Property Name="Дата_окончания" Type="date" Nullable="false" />
+          <Property Name="Название" Type="nchar" MaxLength="30" Nullable="false" />
+          <Property Name="Место_проведения" Type="nchar" MaxLength="100" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Растврация">
+          <Key>
+            <PropertyRef Name="Код_реставрации" />
+          </Key>
+          <Property Name="Код_реставрации" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Реставратор" Type="int" Nullable="false" />
+          <Property Name="Эксопнат" Type="int" Nullable="false" />
+          <Property Name="Время_начала" Type="datetime" Nullable="false" />
+          <Property Name="Время_окончания" Type="datetime" Nullable="false" />
+          <Property Name="Проделанная_работа" Type="nchar" MaxLength="1000" />
+        </EntityType>
+        <EntityType Name="Реставратор">
+          <Key>
+            <PropertyRef Name="Код_реставратора" />
+          </Key>
+          <Property Name="Код_реставратора" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ФИО" Type="nchar" MaxLength="70" Nullable="false" />
+          <Property Name="Специализация" Type="int" Nullable="false" />
+          <Property Name="Логин" Type="nvarchar" MaxLength="60" Nullable="false" />
+          <Property Name="Пароль" Type="nvarchar" MaxLength="60" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Специализация">
+          <Key>
+            <PropertyRef Name="Код_специализации" />
+          </Key>
+          <Property Name="Код_специализации" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Название" Type="nchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Тип_экспоната">
+          <Key>
+            <PropertyRef Name="Код_типа" />
+          </Key>
+          <Property Name="Код_типа" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Навзвание" Type="nchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Экспонат">
+          <Key>
+            <PropertyRef Name="Код_экспоната" />
+          </Key>
+          <Property Name="Код_экспоната" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Название" Type="nchar" MaxLength="60" Nullable="false" />
+          <Property Name="Год_создания" Type="nchar" MaxLength="60" Nullable="false" />
+          <Property Name="Год_обнаружения" Type="nchar" MaxLength="60" Nullable="false" />
+          <Property Name="Тип_экспоната" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Экспонат_выставка">
+          <Key>
+            <PropertyRef Name="Код_связи" />
+          </Key>
+          <Property Name="Код_связи" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Выставка" Type="int" Nullable="false" />
+          <Property Name="Экспонат" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Растврация_Реставратор">
+          <End Role="Реставратор" Type="Self.Реставратор" Multiplicity="1" />
+          <End Role="Растврация" Type="Self.Растврация" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Реставратор">
+              <PropertyRef Name="Код_реставратора" />
+            </Principal>
+            <Dependent Role="Растврация">
+              <PropertyRef Name="Реставратор" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Растврация_Экспонат">
+          <End Role="Экспонат" Type="Self.Экспонат" Multiplicity="1" />
+          <End Role="Растврация" Type="Self.Растврация" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Экспонат">
+              <PropertyRef Name="Код_экспоната" />
+            </Principal>
+            <Dependent Role="Растврация">
+              <PropertyRef Name="Эксопнат" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Реставратор_Специализация">
+          <End Role="Специализация" Type="Self.Специализация" Multiplicity="1" />
+          <End Role="Реставратор" Type="Self.Реставратор" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Специализация">
+              <PropertyRef Name="Код_специализации" />
+            </Principal>
+            <Dependent Role="Реставратор">
+              <PropertyRef Name="Специализация" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Экспонат_выставка_Выставки">
+          <End Role="Выставки" Type="Self.Выставки" Multiplicity="1" />
+          <End Role="Экспонат_выставка" Type="Self.Экспонат_выставка" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Выставки">
+              <PropertyRef Name="Код_выставки" />
+            </Principal>
+            <Dependent Role="Экспонат_выставка">
+              <PropertyRef Name="Выставка" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Экспонат_выставка_Экспонат">
+          <End Role="Экспонат" Type="Self.Экспонат" Multiplicity="1" />
+          <End Role="Экспонат_выставка" Type="Self.Экспонат_выставка" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Экспонат">
+              <PropertyRef Name="Код_экспоната" />
+            </Principal>
+            <Dependent Role="Экспонат_выставка">
+              <PropertyRef Name="Экспонат" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Экспонат_Тип_экспоната">
+          <End Role="Тип_экспоната" Type="Self.Тип_экспоната" Multiplicity="1" />
+          <End Role="Экспонат" Type="Self.Экспонат" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Тип_экспоната">
+              <PropertyRef Name="Код_типа" />
+            </Principal>
+            <Dependent Role="Экспонат">
+              <PropertyRef Name="Тип_экспоната" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Хранилище restovratc_museumModelContainer">
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Выставки" EntityType="Self.Выставки" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Растврация" EntityType="Self.Растврация" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Реставратор" EntityType="Self.Реставратор" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Специализация" EntityType="Self.Специализация" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Тип_экспоната" EntityType="Self.Тип_экспоната" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Экспонат" EntityType="Self.Экспонат" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Экспонат_выставка" EntityType="Self.Экспонат_выставка" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Растврация_Реставратор" Association="Self.FK_Растврация_Реставратор">
+            <End Role="Реставратор" EntitySet="Реставратор" />
+            <End Role="Растврация" EntitySet="Растврация" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Растврация_Экспонат" Association="Self.FK_Растврация_Экспонат">
+            <End Role="Экспонат" EntitySet="Экспонат" />
+            <End Role="Растврация" EntitySet="Растврация" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Реставратор_Специализация" Association="Self.FK_Реставратор_Специализация">
+            <End Role="Специализация" EntitySet="Специализация" />
+            <End Role="Реставратор" EntitySet="Реставратор" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Экспонат_выставка_Выставки" Association="Self.FK_Экспонат_выставка_Выставки">
+            <End Role="Выставки" EntitySet="Выставки" />
+            <End Role="Экспонат_выставка" EntitySet="Экспонат_выставка" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Экспонат_выставка_Экспонат" Association="Self.FK_Экспонат_выставка_Экспонат">
+            <End Role="Экспонат" EntitySet="Экспонат" />
+            <End Role="Экспонат_выставка" EntitySet="Экспонат_выставка" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Экспонат_Тип_экспоната" Association="Self.FK_Экспонат_Тип_экспоната">
+            <End Role="Тип_экспоната" EntitySet="Тип_экспоната" />
+            <End Role="Экспонат" EntitySet="Экспонат" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="restovratc_museumModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="Выставки">
+          <Key>
+            <PropertyRef Name="Код_выставки" />
+          </Key>
+          <Property Name="Код_выставки" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Дата_начала" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="Дата_окончания" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="Название" Type="String" MaxLength="30" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="Место_проведения" Type="String" MaxLength="100" FixedLength="true" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Экспонат_выставка" Relationship="Self.FK_Экспонат_выставка_Выставки" FromRole="Выставки" ToRole="Экспонат_выставка" />
+        </EntityType>
+        <EntityType Name="Растврация">
+          <Key>
+            <PropertyRef Name="Код_реставрации" />
+          </Key>
+          <Property Name="Код_реставрации" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Реставратор" Type="Int32" Nullable="false" />
+          <Property Name="Эксопнат" Type="Int32" Nullable="false" />
+          <Property Name="Время_начала" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Время_окончания" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Проделанная_работа" Type="String" MaxLength="1000" FixedLength="true" Unicode="true" />
+          <NavigationProperty Name="Реставратор1" Relationship="Self.FK_Растврация_Реставратор" FromRole="Растврация" ToRole="Реставратор" />
+          <NavigationProperty Name="Экспонат" Relationship="Self.FK_Растврация_Экспонат" FromRole="Растврация" ToRole="Экспонат" />
+        </EntityType>
+        <EntityType Name="Реставратор">
+          <Key>
+            <PropertyRef Name="Код_реставратора" />
+          </Key>
+          <Property Name="Код_реставратора" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ФИО" Type="String" MaxLength="70" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="Специализация" Type="Int32" Nullable="false" />
+          <Property Name="Логин" Type="String" MaxLength="60" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Пароль" Type="String" MaxLength="60" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Растврация" Relationship="Self.FK_Растврация_Реставратор" FromRole="Реставратор" ToRole="Растврация" />
+          <NavigationProperty Name="Специализация1" Relationship="Self.FK_Реставратор_Специализация" FromRole="Реставратор" ToRole="Специализация" />
+        </EntityType>
+        <EntityType Name="Специализация">
+          <Key>
+            <PropertyRef Name="Код_специализации" />
+          </Key>
+          <Property Name="Код_специализации" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Название" Type="String" MaxLength="50" FixedLength="true" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Реставратор" Relationship="Self.FK_Реставратор_Специализация" FromRole="Специализация" ToRole="Реставратор" />
+        </EntityType>
+        <EntityType Name="Тип_экспоната">
+          <Key>
+            <PropertyRef Name="Код_типа" />
+          </Key>
+          <Property Name="Код_типа" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Навзвание" Type="String" MaxLength="50" FixedLength="true" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Экспонат" Relationship="Self.FK_Экспонат_Тип_экспоната" FromRole="Тип_экспоната" ToRole="Экспонат" />
+        </EntityType>
+        <EntityType Name="Экспонат">
+          <Key>
+            <PropertyRef Name="Код_экспоната" />
+          </Key>
+          <Property Name="Код_экспоната" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Название" Type="String" MaxLength="60" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="Год_создания" Type="String" MaxLength="60" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="Год_обнаружения" Type="String" MaxLength="60" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="Тип_экспоната" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Растврация" Relationship="Self.FK_Растврация_Экспонат" FromRole="Экспонат" ToRole="Растврация" />
+          <NavigationProperty Name="Тип_экспоната1" Relationship="Self.FK_Экспонат_Тип_экспоната" FromRole="Экспонат" ToRole="Тип_экспоната" />
+          <NavigationProperty Name="Экспонат_выставка" Relationship="Self.FK_Экспонат_выставка_Экспонат" FromRole="Экспонат" ToRole="Экспонат_выставка" />
+        </EntityType>
+        <EntityType Name="Экспонат_выставка">
+          <Key>
+            <PropertyRef Name="Код_связи" />
+          </Key>
+          <Property Name="Код_связи" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Выставка" Type="Int32" Nullable="false" />
+          <Property Name="Экспонат" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Выставки" Relationship="Self.FK_Экспонат_выставка_Выставки" FromRole="Экспонат_выставка" ToRole="Выставки" />
+          <NavigationProperty Name="Экспонат1" Relationship="Self.FK_Экспонат_выставка_Экспонат" FromRole="Экспонат_выставка" ToRole="Экспонат" />
+        </EntityType>
+        <Association Name="FK_Экспонат_выставка_Выставки">
+          <End Role="Выставки" Type="Self.Выставки" Multiplicity="1" />
+          <End Role="Экспонат_выставка" Type="Self.Экспонат_выставка" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Выставки">
+              <PropertyRef Name="Код_выставки" />
+            </Principal>
+            <Dependent Role="Экспонат_выставка">
+              <PropertyRef Name="Выставка" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Растврация_Реставратор">
+          <End Role="Реставратор" Type="Self.Реставратор" Multiplicity="1" />
+          <End Role="Растврация" Type="Self.Растврация" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Реставратор">
+              <PropertyRef Name="Код_реставратора" />
+            </Principal>
+            <Dependent Role="Растврация">
+              <PropertyRef Name="Реставратор" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Растврация_Экспонат">
+          <End Role="Экспонат" Type="Self.Экспонат" Multiplicity="1" />
+          <End Role="Растврация" Type="Self.Растврация" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Экспонат">
+              <PropertyRef Name="Код_экспоната" />
+            </Principal>
+            <Dependent Role="Растврация">
+              <PropertyRef Name="Эксопнат" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Реставратор_Специализация">
+          <End Role="Специализация" Type="Self.Специализация" Multiplicity="1" />
+          <End Role="Реставратор" Type="Self.Реставратор" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Специализация">
+              <PropertyRef Name="Код_специализации" />
+            </Principal>
+            <Dependent Role="Реставратор">
+              <PropertyRef Name="Специализация" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Экспонат_Тип_экспоната">
+          <End Role="Тип_экспоната" Type="Self.Тип_экспоната" Multiplicity="1" />
+          <End Role="Экспонат" Type="Self.Экспонат" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Тип_экспоната">
+              <PropertyRef Name="Код_типа" />
+            </Principal>
+            <Dependent Role="Экспонат">
+              <PropertyRef Name="Тип_экспоната" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Экспонат_выставка_Экспонат">
+          <End Role="Экспонат" Type="Self.Экспонат" Multiplicity="1" />
+          <End Role="Экспонат_выставка" Type="Self.Экспонат_выставка" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Экспонат">
+              <PropertyRef Name="Код_экспоната" />
+            </Principal>
+            <Dependent Role="Экспонат_выставка">
+              <PropertyRef Name="Экспонат" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="restovratc_museumEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
+          <EntitySet Name="Выставки" EntityType="Self.Выставки" />
+          <EntitySet Name="Растврация" EntityType="Self.Растврация" />
+          <EntitySet Name="Реставратор" EntityType="Self.Реставратор" />
+          <EntitySet Name="Специализация" EntityType="Self.Специализация" />
+          <EntitySet Name="Тип_экспоната" EntityType="Self.Тип_экспоната" />
+          <EntitySet Name="Экспонат" EntityType="Self.Экспонат" />
+          <EntitySet Name="Экспонат_выставка" EntityType="Self.Экспонат_выставка" />
+          <AssociationSet Name="FK_Экспонат_выставка_Выставки" Association="Self.FK_Экспонат_выставка_Выставки">
+            <End Role="Выставки" EntitySet="Выставки" />
+            <End Role="Экспонат_выставка" EntitySet="Экспонат_выставка" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Растврация_Реставратор" Association="Self.FK_Растврация_Реставратор">
+            <End Role="Реставратор" EntitySet="Реставратор" />
+            <End Role="Растврация" EntitySet="Растврация" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Растврация_Экспонат" Association="Self.FK_Растврация_Экспонат">
+            <End Role="Экспонат" EntitySet="Экспонат" />
+            <End Role="Растврация" EntitySet="Растврация" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Реставратор_Специализация" Association="Self.FK_Реставратор_Специализация">
+            <End Role="Специализация" EntitySet="Специализация" />
+            <End Role="Реставратор" EntitySet="Реставратор" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Экспонат_Тип_экспоната" Association="Self.FK_Экспонат_Тип_экспоната">
+            <End Role="Тип_экспоната" EntitySet="Тип_экспоната" />
+            <End Role="Экспонат" EntitySet="Экспонат" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Экспонат_выставка_Экспонат" Association="Self.FK_Экспонат_выставка_Экспонат">
+            <End Role="Экспонат" EntitySet="Экспонат" />
+            <End Role="Экспонат_выставка" EntitySet="Экспонат_выставка" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Хранилище restovratc_museumModelContainer" CdmEntityContainer="restovratc_museumEntities">
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="restovratc_museumModel.sysdiagrams">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Выставки">
+            <EntityTypeMapping TypeName="restovratc_museumModel.Выставки">
+              <MappingFragment StoreEntitySet="Выставки">
+                <ScalarProperty Name="Код_выставки" ColumnName="Код_выставки" />
+                <ScalarProperty Name="Дата_начала" ColumnName="Дата_начала" />
+                <ScalarProperty Name="Дата_окончания" ColumnName="Дата_окончания" />
+                <ScalarProperty Name="Название" ColumnName="Название" />
+                <ScalarProperty Name="Место_проведения" ColumnName="Место_проведения" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Растврация">
+            <EntityTypeMapping TypeName="restovratc_museumModel.Растврация">
+              <MappingFragment StoreEntitySet="Растврация">
+                <ScalarProperty Name="Код_реставрации" ColumnName="Код_реставрации" />
+                <ScalarProperty Name="Реставратор" ColumnName="Реставратор" />
+                <ScalarProperty Name="Эксопнат" ColumnName="Эксопнат" />
+                <ScalarProperty Name="Время_начала" ColumnName="Время_начала" />
+                <ScalarProperty Name="Время_окончания" ColumnName="Время_окончания" />
+                <ScalarProperty Name="Проделанная_работа" ColumnName="Проделанная_работа" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Реставратор">
+            <EntityTypeMapping TypeName="restovratc_museumModel.Реставратор">
+              <MappingFragment StoreEntitySet="Реставратор">
+                <ScalarProperty Name="Код_реставратора" ColumnName="Код_реставратора" />
+                <ScalarProperty Name="ФИО" ColumnName="ФИО" />
+                <ScalarProperty Name="Специализация" ColumnName="Специализация" />
+                <ScalarProperty Name="Логин" ColumnName="Логин" />
+                <ScalarProperty Name="Пароль" ColumnName="Пароль" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Специализация">
+            <EntityTypeMapping TypeName="restovratc_museumModel.Специализация">
+              <MappingFragment StoreEntitySet="Специализация">
+                <ScalarProperty Name="Код_специализации" ColumnName="Код_специализации" />
+                <ScalarProperty Name="Название" ColumnName="Название" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Тип_экспоната">
+            <EntityTypeMapping TypeName="restovratc_museumModel.Тип_экспоната">
+              <MappingFragment StoreEntitySet="Тип_экспоната">
+                <ScalarProperty Name="Код_типа" ColumnName="Код_типа" />
+                <ScalarProperty Name="Навзвание" ColumnName="Навзвание" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Экспонат">
+            <EntityTypeMapping TypeName="restovratc_museumModel.Экспонат">
+              <MappingFragment StoreEntitySet="Экспонат">
+                <ScalarProperty Name="Код_экспоната" ColumnName="Код_экспоната" />
+                <ScalarProperty Name="Название" ColumnName="Название" />
+                <ScalarProperty Name="Год_создания" ColumnName="Год_создания" />
+                <ScalarProperty Name="Год_обнаружения" ColumnName="Год_обнаружения" />
+                <ScalarProperty Name="Тип_экспоната" ColumnName="Тип_экспоната" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Экспонат_выставка">
+            <EntityTypeMapping TypeName="restovratc_museumModel.Экспонат_выставка">
+              <MappingFragment StoreEntitySet="Экспонат_выставка">
+                <ScalarProperty Name="Код_связи" ColumnName="Код_связи" />
+                <ScalarProperty Name="Выставка" ColumnName="Выставка" />
+                <ScalarProperty Name="Экспонат" ColumnName="Экспонат" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Нет" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
